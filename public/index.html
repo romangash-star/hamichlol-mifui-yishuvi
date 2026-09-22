@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>המכלול | כלי מיפוי יישובי-מועצתי</title>
+<meta name="description" content="כלי דיגיטלי למיפוי יישובי-מועצתי - המכלול, בית לתהליכים">
+<link rel="icon" type="image/png" href="assets/logo/hamichlol-logo-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">דלג לתוכן הראשי</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <img class="brand-logo" src="assets/logo/hamichlol-logo-long.png" alt="המכלול - בית לתהליכים - אישי, ארגוני, קהילתי">
+    <span class="header-title">כלי מיפוי יישובי-מועצתי</span>
+    <span id="autosave-indicator" class="autosave-indicator" role="status" aria-live="polite"></span>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+
+  <!-- INTRO -->
+  <section id="screen-intro" class="screen" aria-labelledby="intro-h1">
+    <div class="hero card">
+      <img class="hero-icon" src="assets/logo/hamichlol-logo-icon.png" alt="" aria-hidden="true">
+      <h1 id="intro-h1">כלי למיפוי יישובי-מועצתי</h1>
+      <p class="lede">
+        כלי ליווי לצוותי חינוך, הנהגות יישוביות וועדות חינוך, לבחינה משותפת של
+        חוסנה של מערכת החינוך הבלתי-פורמלי ביישוב - ולבניית תוכנית עבודה
+        מבוססת על הצרכים שעולים ממנה.
+      </p>
+      <p class="lede-sub">
+        המיפוי בנוי משישה תחומים. בכל תחום תמצאו סדרת היגדים, שדורגו בעבר על
+        ידי צוות המכלול לפי חמש רמות התייחסות: <strong>קהילה, הנהגה, מערכת,
+        צוות, ילדים ונוער</strong>. בסיום תקבלו מיפוי חזותי של המצב הקיים,
+        ותוכלו להמשיך משם אל בנק מטרות אפשריות לבניית תוכנית עבודה.
+      </p>
+
+      <form id="meta-form" class="meta-form">
+        <div class="field field-wide">
+          <label id="gender-toggle-label">באיזה לשון נדבר אליכם בשאלון?</label>
+          <div class="type-toggle" role="radiogroup" aria-labelledby="gender-toggle-label">
+            <button type="button" class="type-toggle-btn" id="gender-btn-m" data-gender="m" aria-pressed="false">זכר</button>
+            <button type="button" class="type-toggle-btn" id="gender-btn-f" data-gender="f" aria-pressed="false">נקבה</button>
+          </div>
+          <p class="field-note">זה משמש רק כדי להתאים את ניסוח השאלון ללשון זכר/נקבה - אין חובה לבחור.</p>
+        </div>
+        <div class="field field-wide">
+          <label id="type-toggle-label">מי ממלא/ת את המיפוי?</label>
+          <div class="type-toggle" role="radiogroup" aria-labelledby="type-toggle-label">
+            <button type="button" class="type-toggle-btn is-active" id="type-btn-settlement" data-type="יישוב" aria-pressed="true">יישוב</button>
+            <button type="button" class="type-toggle-btn" id="type-btn-council" data-type="מועצה אזורית" aria-pressed="false">מועצה אזורית</button>
+          </div>
+        </div>
+        <div class="field field-wide">
+          <label for="f-settlement" id="f-settlement-label">שם היישוב</label>
+          <input id="f-settlement" name="settlement" type="text" autocomplete="off" required>
+        </div>
+        <div class="field field-wide hidden" id="field-sub-settlement">
+          <label for="f-sub-settlement">יישוב ספציפי בתוך המועצה <span class="opt">(לא חובה)</span></label>
+          <input id="f-sub-settlement" name="subSettlement" type="text" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="f-respondent">שם הממלא/ת <span class="opt">(לא חובה)</span></label>
+          <input id="f-respondent" name="respondent" type="text" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="f-role">תפקיד <span class="opt">(לא חובה)</span></label>
+          <input id="f-role" name="role" type="text" autocomplete="off" placeholder="לדוגמה: רכזת חינוך, יו״ר ועדת חינוך...">
+        </div>
+      </form>
+
+      <button id="btn-start" class="btn btn-primary btn-lg" type="button">
+        <span id="btn-start-label">בואו נתחיל</span>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- CATEGORY PICKER -->
+  <section id="screen-categories" class="screen hidden" aria-labelledby="cat-h1">
+    <div class="card">
+      <h1 id="cat-h1"><span id="cat-h1-text">באילו תחומים תרצו למפות?</span></h1>
+      <p class="lede-sub" id="cat-lede-sub">
+        אנחנו ממליצים לענות על כל התחומים כדי לקבל תמונה מלאה, אבל אם יש תחום
+        שמרגיש לכם פחות מתאים או פחות רלוונטי כרגע - לגמרי בסדר לדלג עליו.
+      </p>
+
+      <div class="cat-toolbar">
+        <button id="btn-select-all" class="btn btn-ghost btn-sm" type="button">בחר הכל</button>
+        <button id="btn-select-none" class="btn btn-ghost btn-sm" type="button">נקה בחירה</button>
+      </div>
+
+      <div id="category-list" class="category-grid" role="group" aria-label="בחירת תחומי מיפוי"></div>
+
+      <div class="nav-row">
+        <button id="btn-back-to-intro" class="btn btn-ghost" type="button">חזרה</button>
+        <button id="btn-to-questionnaire" class="btn btn-primary" type="button">המשך לשאלון</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUESTIONNAIRE -->
+  <section id="screen-questionnaire" class="screen hidden" aria-labelledby="q-cat-title">
+    <div class="progress-wrap" aria-hidden="true">
+      <div class="progress-track">
+        <div id="progress-fill" class="progress-fill"></div>
+        <div id="progress-marker" class="progress-marker"></div>
+      </div>
+      <div id="progress-label" class="progress-label"></div>
+    </div>
+
+    <div class="card card-questionnaire">
+      <div id="q-cat-banner" class="cat-banner">
+        <p class="cat-eyebrow" id="q-cat-eyebrow"></p>
+        <h1 id="q-cat-title"></h1>
+        <p class="cat-banner-question" id="q-cat-question"></p>
+      </div>
+
+      <ol id="statement-list" class="statement-list"></ol>
+
+      <div class="nav-row">
+        <button id="btn-prev-cat" class="btn btn-ghost" type="button">התחום הקודם</button>
+        <button id="btn-next-cat" class="btn btn-primary" type="button">התחום הבא</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="screen-results" class="screen hidden" aria-labelledby="res-h1">
+    <div class="card">
+      <h1 id="res-h1">המיפוי שלכם</h1>
+      <p class="lede-sub" id="res-subtitle"></p>
+
+      <h2 class="section-h2">לפי תחום</h2>
+      <div id="chart-categories" class="bars-chart"></div>
+
+      <h2 class="section-h2">לפי דרג התייחסות</h2>
+      <p class="section-note">איך נראית התמונה "לרוחב" - קהילה, הנהגה, מערכת, צוות, ילדים ונוער - על פני כל התחומים שמולאו.</p>
+      <div id="chart-levels" class="bars-chart"></div>
+
+      <p class="autosave-note">✓ התשובות שלכם נשמרות אוטומטית תוך כדי המילוי - אין צורך לשמור ידנית.</p>
+
+      <div class="nav-row">
+        <button id="btn-print" class="btn btn-ghost" type="button">הורדת דוח PDF</button>
+        <button id="btn-to-goals" class="btn btn-primary btn-lg" type="button">המשך לבנק מטרות</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOALS BANK -->
+  <section id="screen-goals" class="screen hidden" aria-labelledby="goals-h1">
+    <div class="card">
+      <h1 id="goals-h1">בנק מטרות</h1>
+      <p class="lede-sub" id="goals-lede-sub">
+        בהתבסס על המיפוי, אלו הצעות למטרות אפשריות בתחומים שבהם יש מקום לחיזוק.
+        סמנו את המטרות שברצונכם לקדם בתוכנית העבודה - אפשר גם לעיין בכל בנק המטרות המלא למטה.
+      </p>
+      <div id="goals-suggested"></div>
+
+      <details id="goals-all-details" class="goals-all-details">
+        <summary>כל בנק המטרות (לפי תחום)</summary>
+        <div id="goals-all"></div>
+      </details>
+
+      <p class="autosave-note">✓ המטרות שתסמנו נשמרות אוטומטית.</p>
+
+      <div class="nav-row">
+        <button id="btn-finish" class="btn btn-primary btn-lg" type="button">סיום</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- THANK YOU -->
+  <section id="screen-thanks" class="screen hidden" aria-labelledby="thanks-h1">
+    <div class="card hero">
+      <img class="hero-icon" src="assets/logo/hamichlol-logo-icon.png" alt="" aria-hidden="true">
+      <h1 id="thanks-h1">תודה!</h1>
+      <p class="lede" id="thanks-lede">המיפוי והמטרות שבחרתם נשמרו בהצלחה. צוות המכלול ישמח לעבור אתכם על התוצאות ולבנות יחד תוכנית עבודה.</p>
+      <div class="nav-row" style="justify-content:center">
+        <button id="btn-download-report" class="btn btn-primary btn-lg" type="button">הורדת דוח PDF מלא</button>
+        <button id="btn-restart" class="btn btn-ghost" type="button">מיפוי חדש</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Dashboard-style report, built dynamically and shown only when printing/exporting to PDF -->
+<div id="print-report" class="print-report" aria-hidden="true"></div>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <img class="footer-logo" src="assets/logo/hamichlol-logo-long.png" alt="המכלול - בית לתהליכים">
+    <p>המכלול | בית לתהליכים · <a href="mailto:keren@hamichlolhome.com">keren@hamichlolhome.com</a> · <a href="mailto:itay@hamichlolhome.com">itay@hamichlolhome.com</a></p>
+    <p><a href="https://www.hamichlolhome.com" target="_blank" rel="noopener">hamichlolhome.com</a></p>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>

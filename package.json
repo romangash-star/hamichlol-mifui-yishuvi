@@ -1,0 +1,14 @@
+{
+  "name": "hamichlol-mifui-yishuvi",
+  "version": "1.0.0",
+  "description": "כלי מיפוי יישובי - המכלול",
+  "private": true,
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

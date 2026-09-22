@@ -1,0 +1,4 @@
+node_modules/
+server/data/submissions/*.json
+server/data/submissions.csv
+server/data/config.json
