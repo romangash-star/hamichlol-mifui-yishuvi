@@ -48,6 +48,7 @@
     meta: { gender: "", settlementType: "יישוב", settlement: "", subSettlement: "", respondent: "", role: "" },
     results: null,
     submissionId: null,
+    createdAt: null,
     selectedGoals: new Set(), // "categoryId::goalIndex"
     autosaveTimer: null,
     autosaveFadeTimer: null,
@@ -112,20 +113,11 @@
     }
   }
 
-  async function ensureSubmission() {
-    if (state.submissionId) return state.submissionId;
-    const res = await fetch("api/submissions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        meta: state.meta,
-        selectedCategories: [],
-        answers: {},
-        results: null,
-      }),
-    });
-    const data = await res.json();
-    state.submissionId = data.id;
+  function ensureSubmission() {
+    if (!state.submissionId) {
+      state.submissionId = crypto.randomUUID();
+      state.createdAt = new Date().toISOString();
+    }
     return state.submissionId;
   }
 
@@ -137,29 +129,36 @@
   }
 
   function scheduleAutosave() {
+    const configured = window.APP_CONFIG && window.APP_CONFIG.SHEETS_WEBHOOK_URL;
+    if (!configured) return; // nothing to save to - the site owner hasn't wired up the Sheets backup yet
     setAutosaveIndicator("שומר...", "saving");
     clearTimeout(state.autosaveTimer);
     state.autosaveTimer = setTimeout(runAutosave, 600);
   }
 
   async function runAutosave() {
+    ensureSubmission();
+    if (state.selectedCategoryIds.length) computeResults();
+
+    const record = {
+      id: state.submissionId,
+      createdAt: state.createdAt,
+      updatedAt: new Date().toISOString(),
+      secret: window.APP_CONFIG.SHARED_SECRET,
+      meta: state.meta,
+      selectedCategories: state.selectedCategoryIds.map((id) => categoryById(id).title),
+      results: state.results,
+      selectedGoals: $(".goal-item") ? collectSelectedGoalsPayload() : [],
+    };
+
     try {
-      await ensureSubmission();
-      if (state.selectedCategoryIds.length) computeResults();
-
-      const payload = {
-        meta: state.meta,
-        selectedCategories: state.selectedCategoryIds.map((id) => categoryById(id).title),
-        answers: state.answers,
-        results: state.results,
-      };
-      // Only send goals if the goals screen has actually rendered checkboxes
-      if ($(".goal-item")) payload.selectedGoals = collectSelectedGoalsPayload();
-
-      await fetch(`api/submissions/${state.submissionId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+      // Sent straight from the browser to the Google Apps Script Web App - no server of our own.
+      // "no-cors" means we can't read the response, so this is a best-effort, fire-and-forget save.
+      await fetch(window.APP_CONFIG.SHEETS_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(record),
       });
       setAutosaveIndicator("✓ נשמר", "saved");
     } catch (err) {
@@ -657,6 +656,7 @@
     state.answers = {};
     state.results = null;
     state.submissionId = null;
+    state.createdAt = null;
     state.selectedGoals = new Set();
     state.meta = { gender: "", settlementType: "יישוב", settlement: "", subSettlement: "", respondent: "", role: "" };
     $("#meta-form").reset();

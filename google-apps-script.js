@@ -1,6 +1,9 @@
 /**
  * גיבוי ל-Google Sheets עבור "כלי מיפוי יישובי-מועצתי" (המכלול)
  *
+ * זהו האתר הסטטי (GitHub Pages) שולח כל שמירה ישירות לכתובת הזו - אין שרת משלנו,
+ * הגיליון הזה הוא מקום האחסון היחיד.
+ *
  * הקמה חד-פעמית:
  * 1. פותחים Google Sheet חדש וריק.
  * 2. תפריט: Extensions > Apps Script.
@@ -9,13 +12,14 @@
  *    - Execute as: Me
  *    - Who has access: Anyone
  * 5. Deploy, ולאשר את בקשות ההרשאה של Google.
- * 6. מעתיקים את כתובת ה-Web app שמתקבלת (מסתיימת ב-/exec).
- * 7. שולחים לי את הכתובת הזו, ואני אחבר אותה לשרת
- *    (server/data/config.json או משתנה סביבה GOOGLE_SHEETS_WEBHOOK_URL ב-Render).
+ * 6. מעתיקים את כתובת ה-Web app שמתקבלת (מסתיימת ב-/exec) ומעדכנים אותה
+ *    ב-public/js/config.js באתר.
  *
- * מרגע החיבור - כל שמירה בכלי (גם שמירה אוטומטית תוך כדי מילוי) תישלח גם לגיליון הזה,
- * בנוסף לשמירה המקומית שכבר קיימת. שורה אחת לכל מילוי, מתעדכנת (upsert) לפי מזהה.
+ * המפתח הסודי (SHARED_SECRET) כבר מוגדר כאן זהה לזה שב-public/js/config.js -
+ * זו לא הגנה אמיתית (הקוד באתר גלוי לכולם), רק סינון של קריאות אקראיות/ספאם.
  */
+
+const SHARED_SECRET = "17d309acf96ba57dbef9c1f05a32151d";
 
 const HEADERS = [
   "id", "createdAt", "updatedAt", "gender", "settlementType", "settlement",
@@ -24,6 +28,14 @@ const HEADERS = [
 ];
 
 function doPost(e) {
+  const data = JSON.parse(e.postData.contents);
+
+  if (data.secret !== SHARED_SECRET) {
+    return ContentService.createTextOutput(JSON.stringify({ ok: false, error: "forbidden" })).setMimeType(
+      ContentService.MimeType.JSON
+    );
+  }
+
   const sheet =
     SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Submissions") ||
     SpreadsheetApp.getActiveSpreadsheet().insertSheet("Submissions");
@@ -32,7 +44,6 @@ function doPost(e) {
     sheet.appendRow(HEADERS);
   }
 
-  const data = JSON.parse(e.postData.contents);
   const row = [
     data.id || "",
     data.createdAt || "",

@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "hamichlol-mifui-yishuvi",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "start"],
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["dev-server.js"],
       "port": 3300
     }
   ]
