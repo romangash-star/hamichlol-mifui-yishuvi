@@ -121,11 +121,19 @@
     return state.submissionId;
   }
 
+  // Reads from state.selectedGoals (the authoritative source, updated by the checkbox change
+  // handlers in renderGoalsScreen) rather than querying the DOM - the goals screen's markup can be
+  // stale/hidden (e.g. right after a restart, before it's re-rendered), which previously leaked
+  // goals from a *previous* session into a brand-new one.
   function collectSelectedGoalsPayload() {
-    return $$('.goal-item input[type="checkbox"]:checked').map((cb) => ({
-      category: cb.dataset.cat,
-      text: cb.dataset.text,
-    }));
+    return Array.from(state.selectedGoals)
+      .map((key) => {
+        const [catId, idxStr] = key.split("::");
+        const cat = state.goalsData.categories.find((c) => c.id === catId);
+        const text = cat?.goals[Number(idxStr)];
+        return cat && text ? { category: cat.title, text } : null;
+      })
+      .filter(Boolean);
   }
 
   function scheduleAutosave() {
@@ -143,7 +151,7 @@
   function buildDynamicColumns() {
     const columns = [];
 
-    const goalsPayload = $(".goal-item") ? collectSelectedGoalsPayload() : [];
+    const goalsPayload = collectSelectedGoalsPayload();
     columns.push({
       key: "goalsText",
       header: "מטרות שנבחרו",
