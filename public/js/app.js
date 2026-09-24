@@ -153,14 +153,23 @@
 
     try {
       // Sent straight from the browser to the Google Apps Script Web App - no server of our own.
-      // "no-cors" means we can't read the response, so this is a best-effort, fire-and-forget save.
-      await fetch(window.APP_CONFIG.SHEETS_WEBHOOK_URL, {
+      // "text/plain" content type avoids a CORS preflight; Apps Script's actual response (after
+      // its internal redirect) does send permissive CORS headers, so plain "cors" mode works and
+      // lets us read back whether it really succeeded. ("no-cors" looked like it worked too - the
+      // fetch promise resolves either way - but it silently never reached doPost: Apps Script's
+      // redirect drops the POST body under no-cors, so nothing was ever actually saved.)
+      const res = await fetch(window.APP_CONFIG.SHEETS_WEBHOOK_URL, {
         method: "POST",
-        mode: "no-cors",
+        mode: "cors",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(record),
       });
-      setAutosaveIndicator("✓ נשמר", "saved");
+      const data = await res.json();
+      if (data.ok) {
+        setAutosaveIndicator("✓ נשמר", "saved");
+      } else {
+        setAutosaveIndicator("שמירה נכשלה: " + (data.error || "שגיאה לא ידועה"), "error");
+      }
     } catch (err) {
       setAutosaveIndicator("שמירה נכשלה - בודק חיבור...", "error");
     }
