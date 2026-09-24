@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ניהול תוכן | כלי מיפוי יישובי-מועצתי</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="assets/logo/hamichlol-logo-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <img class="brand-logo" src="assets/logo/hamichlol-logo-long.png" alt="המכלול">
+    <span class="header-title">ניהול תוכן השאלון</span>
+  </div>
+</header>
+
+<main class="wrap admin-main">
+
+  <!-- LOGIN -->
+  <section id="admin-login" class="card admin-login-card">
+    <h1>כניסה למערכת הניהול</h1>
+    <p class="lede-sub">הזינו את סיסמת המנהל כדי לערוך את תחומי המיפוי ובנק המטרות.</p>
+    <div class="field">
+      <label for="admin-password">סיסמה</label>
+      <input id="admin-password" type="password" autocomplete="current-password">
+    </div>
+    <button id="btn-login" class="btn btn-primary btn-lg" type="button">כניסה</button>
+    <p id="login-status" class="save-status" role="status"></p>
+    <p class="field-note" id="worker-missing-note"></p>
+  </section>
+
+  <!-- EDITOR -->
+  <section id="admin-editor" class="hidden">
+
+    <div class="admin-toolbar card">
+      <div class="admin-tabs" role="tablist">
+        <button class="admin-tab is-active" data-tab="categories" type="button">תחומי מיפוי</button>
+        <button class="admin-tab" data-tab="goals" type="button">בנק מטרות</button>
+        <button class="admin-tab" data-tab="raw" type="button">JSON גולמי</button>
+      </div>
+      <div class="admin-actions">
+        <button id="btn-publish" class="btn btn-primary btn-lg" type="button">פרסום שינויים לאתר החי</button>
+        <span id="publish-status" class="save-status" role="status"></span>
+      </div>
+    </div>
+
+    <!-- Categories tab -->
+    <div id="tab-categories" class="admin-tab-panel card">
+      <div class="admin-panel-head">
+        <h2>תחומי מיפוי</h2>
+        <button id="btn-add-category" class="btn btn-ghost btn-sm" type="button">+ הוספת תחום</button>
+      </div>
+      <div id="categories-list"></div>
+    </div>
+
+    <!-- Goals tab -->
+    <div id="tab-goals" class="admin-tab-panel card hidden">
+      <div class="admin-panel-head">
+        <h2>בנק מטרות</h2>
+        <button id="btn-add-goal-category" class="btn btn-ghost btn-sm" type="button">+ הוספת קטגוריית מטרות</button>
+      </div>
+      <div id="goal-categories-list"></div>
+    </div>
+
+    <!-- Raw JSON tab -->
+    <div id="tab-raw" class="admin-tab-panel card hidden">
+      <h2>JSON גולמי (למתקדמים)</h2>
+      <p class="lede-sub">
+        לשימוש בעת הצורך - עריכה ישירה, גיבוי, או ייבוא תוכן שהוכן מראש.
+        לחיצה על "טען עריכה למסכים" מחליפה את כל התוכן במסכים למעלה בתוכן שכתוב כאן.
+      </p>
+      <h3>questions.json</h3>
+      <textarea id="raw-questions" class="admin-raw-textarea" spellcheck="false"></textarea>
+      <h3>goals-bank.json</h3>
+      <textarea id="raw-goals" class="admin-raw-textarea" spellcheck="false"></textarea>
+      <div class="nav-row">
+        <button id="btn-raw-to-editor" class="btn btn-ghost" type="button">טען עריכה למסכים</button>
+        <button id="btn-editor-to-raw" class="btn btn-ghost" type="button">רענן מהמסכים</button>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
