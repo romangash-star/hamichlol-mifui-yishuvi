@@ -8,7 +8,7 @@
 // זו הכתובת היחידה שדרכה אפשר לפרסם שינויים לתוכן - הסיסמה עצמה לא נמצאת כאן,
 // היא נבדקת בצד השרת (ב-Worker) בלבד.
 window.APP_CONFIG = {
-  SHEETS_WEBHOOK_URL: "", // לדוגמה: "https://script.google.com/macros/s/XXXXXXXX/exec"
+  SHEETS_WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbyXsImOVkSpqWxQfwd5JXToJF0IWtUy-MvYLQmdNLnf8fP0KJnVH-NxrGbwiY9i8MzbxA/exec",
   SHARED_SECRET: "17d309acf96ba57dbef9c1f05a32151d",
   ADMIN_WORKER_URL: "", // לדוגמה: "https://hamichlol-admin.your-subdomain.workers.dev"
 };
