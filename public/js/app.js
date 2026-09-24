@@ -136,19 +136,60 @@
     state.autosaveTimer = setTimeout(runAutosave, 600);
   }
 
+  // Builds one column per category-average, per individual statement answer, and the chosen
+  // goals - each as {key, header, value}. The key is a stable id (survives text edits made later
+  // through the admin panel); the header is what the person doing the analysis actually sees.
+  // The Apps Script side is generic: it just gets-or-creates a Sheet column for every key it sees.
+  function buildDynamicColumns() {
+    const columns = [];
+
+    const goalsPayload = $(".goal-item") ? collectSelectedGoalsPayload() : [];
+    columns.push({
+      key: "goalsText",
+      header: "מטרות שנבחרו",
+      value: goalsPayload.map((g) => `${g.category}: ${g.text}`).join(" | "),
+    });
+
+    (state.results?.categoryScores || []).forEach((cs) => {
+      columns.push({ key: `cat:${cs.id}`, header: `ציון תחום: ${cs.title}`, value: cs.average });
+    });
+
+    state.selectedCategoryIds.forEach((catId) => {
+      const cat = categoryById(catId);
+      cat.statements.forEach((stmt) => {
+        const val = state.answers[stmt.id];
+        if (val) {
+          columns.push({ key: `stmt:${stmt.id}`, header: `${cat.title} — ${stmt.text}`, value: val });
+        }
+      });
+    });
+
+    return columns;
+  }
+
   async function runAutosave() {
     ensureSubmission();
     if (state.selectedCategoryIds.length) computeResults();
+
+    const levelAverages = {};
+    (state.results?.levelScores || []).forEach((ls) => (levelAverages[ls.level] = ls.average));
 
     const record = {
       id: state.submissionId,
       createdAt: state.createdAt,
       updatedAt: new Date().toISOString(),
       secret: window.APP_CONFIG.SHARED_SECRET,
-      meta: state.meta,
-      selectedCategories: state.selectedCategoryIds.map((id) => categoryById(id).title),
-      results: state.results,
-      selectedGoals: $(".goal-item") ? collectSelectedGoalsPayload() : [],
+      fixed: {
+        gender: state.meta.gender,
+        settlementType: state.meta.settlementType,
+        settlement: state.meta.settlement,
+        subSettlement: state.meta.subSettlement,
+        respondent: state.meta.respondent,
+        role: state.meta.role,
+        overallAverage: state.results?.overallAverage ?? "",
+        levelAverages,
+      },
+      dynamicColumns: buildDynamicColumns(),
     };
 
     try {
